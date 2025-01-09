@@ -22,7 +22,24 @@ Ini adalah API untuk sistem Learning Management System (LMS) yang digunakan untu
 - Model yang diremake dari project sebelumnya ada yang menggunakan perkiraan, seperi model user dikarenakan kurangnya dokumentasi
 - Mohon maaf jika masih banyak kekurangan, dan mohon maaf jika saya jarang masuk kelas hehehehe 🙏
 
+## Tutorial How To Clone
+- Masuk ke folder yang anda ingin tempatkan
+- Masukkan Command Berikut 
+`git clone https://github.com/LibraTechDev/API-LMS-SEDERHANA.git`
+- Ketikkan di Terminal
+`cp .env.example .env`
+- Ketikkan di Terminal 
+`php artisan key:generate`
+- Ketikkan 
+`composer install`
+- Ketikkan 
+`php artisan migrate --seed`
+- Lalu jalankan server
+`php artisan ser`
 
+## Tool Testing API
+Bisa menggunakan Postman , dan sejenisnya lalu akses api nya. Untuk bisa merequest Route API yang berada di dalam grup function auth:sanctum memerlukan authToken yang didapat dari register user. Lalu tambahkan authToken sebagai Authorization untuk key nya lalu Bearer | {authToken} sebagai value di headernya 
+ 
 ## Developer
 Primavieri Rhesa Ardana 
 
