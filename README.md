@@ -21,7 +21,7 @@ git clone https://github.com/LibraTechDev/API-LMS-SEDERHANA.git
 Clonning project manajemen inventory ke directory yang sedang anda akses saat ini
 ### 2. Change Directory
 ```shell
-cd API-LMS
+cd container-inventory
 ```
 Berpindah menuju directory / folder hasil dari project yang telah di clone
 ### 3. Install Project
@@ -92,9 +92,72 @@ docker exec laravel_app php artisan migrate --seed
 ```
 Migrasi database untuk memperbarui struktur tabel dan mengisi data awal (seeding) di dalam container `laravel_app`
 
+#### Credential Login
+```
+Username : admin
+Email    : admin@gmail.com
+Password : sudo
+```
+
+## TROUBLESHOOT
+Menemui masalah berupa tidak bisa menjalankan perintah
+```
+docker exec laravel_app php artisan migrate --seed
+```
+
+Hal ini terjadi karena  Kredensial database dalam konfigurasi container MySQL tidak benar. Mencoba membuat user root dengan MYSQL_USER yang tidak diizinkan - user root sudah dibuat secara otomatis dengan MYSQL_ROOT_PASSWORD, maka langkah yang perlu dilakukan adalah merubah `.env` nya menjadi berikut
+```.env
+DB_CONNECTION=mysql
+DB_HOST=mysql_db
+DB_PORT=3306
+DB_DATABASE=inventory
+DB_USERNAME=root
+DB_PASSWORD=root
+```
+
+lalu menambahkan config berikut di `docker-compose.yml` 
+```yml
+app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    restart: always
+    working_dir: /var/www/html
+    volumes:
+      - ./inventory-project:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: inventory
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:   # Adding healthcheck for monitoring (Optional)
+      test: ["CMD", "mysqladmin", "ping", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+```
+Lalu jalankan ulang migrate seed nya , maka akan bisa menjalankannya
+
 ## Arsitektur Aplikasi
 - **docker-compose.yml** - Konfigurasi yang digunakan oleh Docker Compose untuk mendefinisikan dan menjalankan multi-container Docker aplikasi, termasuk pengaturan layanan, jaringan, volume, dan penghubung antar container
 - **Dockerfile** - File teks yang berisi serangkaian instruksi untuk membangun image Docker, termasuk pengaturan sistem, instalasi aplikasi, dan konfigurasi yang diperlukan
 - **inventory-project** - Source code project aplikasi manajemen inventory 
+- **nginx.conf** - File konfigurasi utama Nginx yang mengatur pengaturan server, rute trafik, dan interaksi dengan aplikasi 
+- **setup.sh** - Script installasi setup untuk membuat container, frontend, backend, dan database
+
 - **nginx.conf** - File konfigurasi utama Nginx yang mengatur pengaturan server, rute trafik, dan interaksi dengan aplikasi 
 - **setup.sh** - Script installasi setup untuk membuat container, frontend, backend, dan database
