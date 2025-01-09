@@ -2,6 +2,12 @@
 ## Project Overview
 Ini adalah API untuk sistem Learning Management System (LMS) yang digunakan untuk Ujian Akhir Semester (UAS) Pemrograman di sisi server. 
 
+## Developer
+Primavieri Rhesa Ardana (A11.2022.14557)
+
+## Tool Testing API
+Bisa menggunakan Postman , dan sejenisnya lalu akses api nya. Untuk bisa merequest Route API yang berada di dalam grup function auth:sanctum memerlukan authToken yang didapat dari register user. Lalu tambahkan authToken sebagai Authorization untuk key nya lalu Bearer | {authToken} sebagai value di headernya 
+ 
 ## Technology Stack
 - Laravel - Framework PHP
 - MySQL - Relational Database Management System
@@ -50,10 +56,5 @@ php artisan migrate --seed
 php artisan ser
 ```
 
-## Tool Testing API
-Bisa menggunakan Postman , dan sejenisnya lalu akses api nya. Untuk bisa merequest Route API yang berada di dalam grup function auth:sanctum memerlukan authToken yang didapat dari register user. Lalu tambahkan authToken sebagai Authorization untuk key nya lalu Bearer | {authToken} sebagai value di headernya 
- 
-## Developer
-Primavieri Rhesa Ardana 
 
 
