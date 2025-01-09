@@ -92,12 +92,6 @@ docker exec laravel_app php artisan migrate --seed
 ```
 Migrasi database untuk memperbarui struktur tabel dan mengisi data awal (seeding) di dalam container `laravel_app`
 
-#### Credential Login
-```
-Username : admin
-Email    : admin@gmail.com
-Password : sudo
-```
 
 ## TROUBLESHOOT
 Menemui masalah berupa tidak bisa menjalankan perintah
