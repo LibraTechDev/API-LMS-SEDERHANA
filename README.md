@@ -1,66 +1,100 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# API LMS UAS PEMROGRAMAN SISI SERVER
+## Project Overview
+Ini adalah API untuk sistem Learning Management System (LMS) yang digunakan untuk Ujian Akhir Semester (UAS) Pemrograman di sisi server. Proyek ini adalah bagian dari tugas pemrograman dan dibuat dengan dedikasi oleh tim developer dari HMTI UDINUS.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Technology Stack
+- Laravel - Framework PHP
+- MySQL - Relational Database Management System
 
-## About Laravel
+## Developer
+Primavieri Rhesa Ardana 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Prerequisite
+Pada sistem operasi user telah terinstal `Docker Desktop` atau package `docker` & `docker-compose`
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Guide / Step-by-step
+### 1. Clone Project
+```shell
+git clone https://github.com/LibraTechDev/API-LMS-SEDERHANA.git
+```
+Clonning project manajemen inventory ke directory yang sedang anda akses saat ini
+### 2. Change Directory
+```shell
+cd API-LMS
+```
+Berpindah menuju directory / folder hasil dari project yang telah di clone
+### 3. Install Project
+#### 3.1. Linux & MacOS (UNIX)
+```shell
+./setup.sh
+```
+Melakukan setup installasi dari awal hingga akhir (container-frontend-backend), scripting yang membantu dengan menghindari serimonial setup ;)
+#### 3.2. Windows 
+Sayangnya scripting `setup.sh` tidak bisa berjalan kecuali user menggunakan wsl dengan mounting yang sesuai maka bisa apabila menggunakan cara reguler pada Windows sayangnya tidak bisa, user harus melakukan kegiatan seremonial setup :(
+##### 3.2.1. Compose Up
+```shell
+docker-compose up -d --build
+```
+Bertujuan untuk inisialisasi awal seperti pembuatan `Dockerfile` dan `docker-compose.yml` menjadi suatu container
+##### 3.2.2. Change Modifier
+```shell
+docker-compose exec app chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache
+```
+Direcotry `/storage` dan `/bootstrap/cache` akan memiliki semua akses (Write, Read, Execute)
+##### 3.2.3. NPM Install
+```shell
+docker exec laravel_app npm i
+```
+Menginstall segala dependency untuk frontend yang bersumber dari `package.json`
+##### 3.2.4. NPM Build
+```shell
+docker exec laravel_app npm run build
+```
+Perintah yang menjalankan skrip `build` yang terdefinisi di file `package.json` dalam container `laravel_app`
+##### 3.2.5. Composer Scope Install
+```shell
+docker exec laravel_app composer install
+```
+Menginstal dependensi PHP yang terdaftar di file `composer.json` dalam container `laravel_app`
+##### 3.2.6. Duplicate .ENV File
+```shell
+docker exec laravel_app cp .env.example .env
+```
+Menyalin file `.env.example` menjadi file `.env` di dalam container `laravel_app`, yang digunakan untuk konfigurasi aplikasi
+##### 3.2.7. Activate .ENV File
+```shell
+docker exec laravel_app php artisan key:generate
+```
+Menghasilkan dan mengatur kunci aplikasi baru untuk Laravel di dalam container `laravel_app`, yang digunakan untuk keamanan aplikasi
+##### 3.2.8. Formatting .ENV File
+Ubah file `.env` yang terletak di `/inventory-project`
+```.env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=inventory
+DB_USERNAME=root
+DB_PASSWORD=
+```
+Menjadi
+```.env
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=inventory
+DB_USERNAME=root
+DB_PASSWORD=root
+```
+##### 3.2.9. Database
+```shell
+docker exec laravel_app php artisan migrate --seed
+```
+Migrasi database untuk memperbarui struktur tabel dan mengisi data awal (seeding) di dalam container `laravel_app`
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Arsitektur Aplikasi
+- **docker-compose.yml** - Konfigurasi yang digunakan oleh Docker Compose untuk mendefinisikan dan menjalankan multi-container Docker aplikasi, termasuk pengaturan layanan, jaringan, volume, dan penghubung antar container
+- **Dockerfile** - File teks yang berisi serangkaian instruksi untuk membangun image Docker, termasuk pengaturan sistem, instalasi aplikasi, dan konfigurasi yang diperlukan
+- **inventory-project** - Source code project aplikasi manajemen inventory 
+- **nginx.conf** - File konfigurasi utama Nginx yang mengatur pengaturan server, rute trafik, dan interaksi dengan aplikasi 
+- **setup.sh** - Script installasi setup untuk membuat container, frontend, backend, dan database
